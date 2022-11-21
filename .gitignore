@@ -1,3 +1,5 @@
 vendor/
 .env
+.env.sandbox
+.env.production
 .idea/

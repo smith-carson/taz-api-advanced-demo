@@ -25,7 +25,7 @@ class Main
         $this->jwtToken = $_ENV['JWT_TOKEN'];
         $this->clientGuid = $_ENV['CLIENT_GUID'];
         $this->baseUrl = $_ENV['TAZ_URL'];
-        $this->clientProductGuid = '3bbb979c-4652-40a0-8dd0-590b72f5352a'; // Tenant Product // can be obtained using allProducts function
+        $this->clientProductGuid = 'a04cc4e3-7af8-4f0f-a4c7-c4ca77ca220c'; // Tenant Product // can be obtained using allProducts function
 
         $this->client = new Client();
         $this->headers = [
@@ -100,6 +100,14 @@ class Main
         $response = json_decode($res->getBody());
         dump($response);
     }
+
+    public function allClients()
+    {
+        $request = new Request("GET", "{$this->baseUrl}/clients?page=0&size=20", $this->headers);
+        $res = $this->client->sendAsync($request)->wait();
+        $response = json_decode($res->getBody());
+        dump($response);
+    }
 }
 
 $main = new Main();
@@ -108,6 +116,8 @@ $applicantGuid = $main->createApplicantThatUsesQuickApp("Marcelo", "Andrade", "m
 
 $orderGuid = $main->submitOrder($applicantGuid);
 
+// $orderGuid = "a394f387-4887-4f27-9d4f-4ce3542e1aeb";
+
 $status = $main->checkOrderStatus($orderGuid);
 // app-pending (APPLICANT_PENDING) means the user have not opened the quickapp form yet
 // app-ready  (APPLICANT_READY) means the user have submitted all the info in quickapp
@@ -115,6 +125,7 @@ $status = $main->checkOrderStatus($orderGuid);
 // there are other statuses: https://docs.developer.tazworks.com/?version=latest#16c2bff6-501c-432b-a89d-19141f277fc6
 
 // Misc calls
-//$main->getPdf("8911cdd5-de9f-488a-86e9-ba437531ffb5"); die();
-//$main->allOrders(); die();
-//$main->allProducts(); die();
+// $main->getPdf($orderGuid); die();
+// $main->allOrders(); die();
+// $main->allProducts(); die();
+// $main->allClients(); die();
